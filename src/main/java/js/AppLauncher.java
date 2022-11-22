@@ -22,7 +22,7 @@ public class AppLauncher {
         // localhost/app1 and localhost/app2
         //docBase: path where you can add statics files
         Context ctx = tomcat.addContext("", null);
-        Wrapper servlet = Tomcat.addServlet(ctx, "myFirstServlet", new MyFirstServlet());
+        Wrapper servlet = Tomcat.addServlet(ctx, "myFirstServlet", new MyFancyPdfInvoicesServlet());
         servlet.setLoadOnStartup(1);
 
         //You are telling Tomcat that your Servlet should react to any request that starts with "/", i.e.
