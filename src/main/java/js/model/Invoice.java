@@ -21,7 +21,7 @@ public class Invoice {
 
     private Integer amount;
 
-    Invoice(String userId,  Integer amount,String pdfUrl){
+    public Invoice(String userId,  Integer amount,String pdfUrl){
         this.id = UUID.randomUUID().toString();
         this.userId = userId;
         this.amount = amount;

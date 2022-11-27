@@ -1,8 +1,8 @@
 package js.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import js.context.Application;
 import js.model.Invoice;
-import js.service.InvoiceService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,8 +13,6 @@ import java.util.List;
 
 public class MyFancyPdfInvoicesServlet extends HttpServlet {
 
-    private final InvoiceService invoiceService = new InvoiceService();
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -30,10 +28,10 @@ public class MyFancyPdfInvoicesServlet extends HttpServlet {
             response.setContentType("application/json; charset=UTF-8");
 
             //get all invoices
-            List<Invoice> invoices = invoiceService.findAll();
+            List<Invoice> invoices = Application.invoiceService.findAll();
 
             //convert invoices to json
-            String json = objectMapper.writeValueAsString(invoices);
+            String json = Application.objectMapper.writeValueAsString(invoices);
 
             //return json with invoices
             response.getWriter().print(json);
@@ -61,10 +59,10 @@ public class MyFancyPdfInvoicesServlet extends HttpServlet {
             response.setContentType("application/json; charset=UTF-8");
 
             //create new invoice
-            Invoice invoice = invoiceService.create(userId, amount);
+            Invoice invoice = Application.invoiceService.create(userId, amount);
 
             //convert invoice to json
-            String json = objectMapper.writeValueAsString(invoice);
+            String json = Application.objectMapper.writeValueAsString(invoice);
 
             //return json
             response.getWriter().print(json);
