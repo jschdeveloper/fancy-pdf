@@ -6,7 +6,7 @@ this project do:
 - save users
 - save invoices
 - list all invoices
-- return transactions in ```JSON``` format
+- return invoices in ```JSON``` format
 
 Goal of this project:
 - Understand servlets
@@ -16,7 +16,7 @@ Goal of this project:
 - Get parameters of ```request```
 
 to execute:
-- open command line
+- open command line and go to the directory with a jar file
 - execute ```java -jar fancy-pdf-1.0-SNAPSHOT.jar```
 - test with ```http://localhost:8080/```
 
