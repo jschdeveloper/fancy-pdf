@@ -1,8 +1,12 @@
 package js.web;
 
 
-import js.context.Application;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import js.context.MyFancyPdfInvoicesApplicationConfiguration;
 import js.model.Invoice;
+import js.service.InvoiceService;
+import js.service.UserService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +17,19 @@ import java.util.List;
 
 public class MyFancyPdfInvoicesServlet extends HttpServlet {
 
+    private UserService userService;
+    private ObjectMapper objectMapper;
+    private InvoiceService invoiceService;
+
+
+    @Override
+    public void init() throws ServletException {
+        AnnotationConfigApplicationContext ctx
+                = new AnnotationConfigApplicationContext(MyFancyPdfInvoicesApplicationConfiguration.class);
+        this.userService = ctx.getBean(UserService.class);
+        this.objectMapper = ctx.getBean(ObjectMapper.class);
+        this.invoiceService = ctx.getBean(InvoiceService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -28,10 +45,10 @@ public class MyFancyPdfInvoicesServlet extends HttpServlet {
             response.setContentType("application/json; charset=UTF-8");
 
             //get all invoices
-            List<Invoice> invoices = Application.invoiceService.findAll();
+            List<Invoice> invoices = invoiceService.findAll();
 
             //convert invoices to json
-            String json = Application.objectMapper.writeValueAsString(invoices);
+            String json = objectMapper.writeValueAsString(invoices);
 
             //return json with invoices
             response.getWriter().print(json);
@@ -46,8 +63,7 @@ public class MyFancyPdfInvoicesServlet extends HttpServlet {
         System.out.println("post path: " + request.getRequestURI());
         String path = request.getRequestURI();
 
-        //test with cUrl
-        //curl -d "user_id=jesus&amount=10" -X POST http://localhost:8080/invoices/
+        //test: curl -d "user_id=jesus&amount=10" -X POST http://localhost:8080/invoices/
 
         if ("/invoices".equalsIgnoreCase(path)) {
 
@@ -59,10 +75,10 @@ public class MyFancyPdfInvoicesServlet extends HttpServlet {
             response.setContentType("application/json; charset=UTF-8");
 
             //create new invoice
-            Invoice invoice = Application.invoiceService.create(userId, amount);
+            Invoice invoice = invoiceService.create(userId, amount);
 
             //convert invoice to json
-            String json = Application.objectMapper.writeValueAsString(invoice);
+            String json = objectMapper.writeValueAsString(invoice);
 
             //return json
             response.getWriter().print(json);
