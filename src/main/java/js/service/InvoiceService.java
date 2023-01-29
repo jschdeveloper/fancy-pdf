@@ -4,14 +4,16 @@ import js.model.Invoice;
 import js.model.User;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 public class InvoiceService {
+    List<Invoice> invoices = new CopyOnWriteArrayList<>();
 
     private final UserService userService;
-    List<Invoice> invoices = new CopyOnWriteArrayList<>();
 
     public InvoiceService(UserService userService) {
         this.userService = userService;
@@ -36,4 +38,17 @@ public class InvoiceService {
         //return new invoice
         return invoice;
     }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("Fetching PDF Template from S3...");
+        // TODO download from s3 and save locally
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        System.out.println("Deleting downloaded templates...");
+        // TODO actual deletion of PDFs
+    }
+
 }
