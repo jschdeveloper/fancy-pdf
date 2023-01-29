@@ -2,10 +2,12 @@ package js.service;
 
 import js.model.Invoice;
 import js.model.User;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Component
 public class InvoiceService {
 
     private final UserService userService;
