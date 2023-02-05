@@ -2,6 +2,7 @@ package js.service;
 
 import js.model.Invoice;
 import js.model.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -14,9 +15,11 @@ public class InvoiceService {
     List<Invoice> invoices = new CopyOnWriteArrayList<>();
 
     private final UserService userService;
+    private final String cdnUrl;
 
-    public InvoiceService(UserService userService) {
+    public InvoiceService(UserService userService, @Value("${cdn.url}") String cdnUrl) {
         this.userService = userService;
+        this.cdnUrl = cdnUrl;
     }
 
     public List<Invoice> findAll() {
@@ -30,7 +33,7 @@ public class InvoiceService {
             throw new IllegalStateException();
         }
         //create invoice
-        Invoice invoice = new Invoice(userId, amount, "http://www.africau.edu/images/default/sample.pdf");
+        Invoice invoice = new Invoice(userId, amount, cdnUrl + "/images/default/sample.pdf");
 
         //add to list
         invoices.add(invoice);
